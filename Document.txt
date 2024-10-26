@@ -1,0 +1,238 @@
+#### Folder structure
+
+- node_modules
+  Contain all dependencies required by the app. Main Dependencies also listed in packet.json
+
+- Public
+
+    Contains static assets including index.html(page template).
+    -index.html
+        - title
+        - fonts
+        - css
+        - favicon
+        - id = "root" - our entire app
+
+    - src
+
+        In simplest form it's brain of our app. 
+        This is where we will do all of our work.
+        src/index.js is the javascript entry point.
+
+    - .gitignore
+
+        specifies which files source control (Git) should ignore 
+    
+    - Package.json
+
+        Every Node.js Project has a package.json and it contains info about our project, 
+        for example list of Dependencies and scripts
+
+- Package.json
+
+    Every Node.js project has project.json and it contain info about our project, for example
+    list of dependencies and scripts.
+
+ - Package-lock.json
+    
+    A snap shot of entire dependency tree
+
+  - README
+
+    The markdown file where you can share more info about the project for example build instructions
+    and summary.
+
+#### Remove Boilerplate
+
+ - remove src Folder
+ - create src Folder
+ - create index.js inside src
+ - toggle sidebar CMD + B
+ - Shortcuts and settings/keyboard shortcuts
+
+ #### FirstComponent
+
+ ```js
+ function Greetings = () => {
+    return <h2>My First Component</h2>
+ }
+
+ // arrow function also works
+
+ const Greetings = () => {
+    return <h2> MyFirst component </h2>
+ }
+
+```
+ - Start with capital letter
+ - Must return JSX (html)
+ - always close tag <Greetings />
+
+#### Typical Components
+
+ ```js
+ // imports or logic
+
+const Greetings = () => {
+    return <h2> MyFirst component </h2>
+ }
+
+export default Greetings;
+```
+
+##### Root Component
+
+index.js
+```js
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
+function Greetings = () => {
+    return <h2>My First Component</h2>
+ }
+
+ const root = ReactDOM.createRoot(document.getElementById('root'));
+
+ root.render(<Greetings/>);
+
+
+ ```
+ - createRoot is special method it always looking for 'root'
+ - when we create a component need to render the component 
+
+#### Extension and setting.json
+
+- Auto Rename Tag
+- Highlight Matching Tag
+- customize in settings.json
+- Prettier
+- Format on save
+- Format on paste
+- Default Formatter (prettier - code formatter)
+
+settings.json
+
+```json
+
+"editor.formatOnPaste":true,
+"editor.formatOnSave":true,
+"editor.defaultFormatter":"esbenp.prettier-vscode",
+"prettier.singleQuote":true,
+"prettier.semi": false,
+
+```
+- Emmet
+
+settings.json
+```json
+"emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+},
+
+```
+- ES7 Snippets
+
+    - rafce (arrow func with export)
+    - rfce (regular func with export)
+    - same as the file name
+    - react auto import
+        - uncheck
+        - React Snippets > Settings: Import React On Top
+
+#### First Component In Detail
+
+- Capital letter
+- must return something
+- JSX syntax (return html)
+- to make our life easier
+- calling function under the hood
+
+index.js
+```js
+
+const Greetings = () => {
+    return React.createElement('h2', {}, 'hello world');
+};
+
+```
+index.js
+```js
+const Greetings = () => {
+    return 
+    <div>
+        <h2> Hello World! </h2>
+    </div>
+}
+
+const Greetings = () => {
+    return React.createElement(
+        'div', 
+        {},
+        React.createElement('h2', {}, 'Hello World!')
+    );
+};
+
+#### JSX Rules
+
+- return single element
+
+    - semantics section/article
+    - Fragment - let's us group elements without adding extra nodes.
+
+```js
+return <React.Fragment>...rest of the return</React.Fragment>
+
+// shorthand
+
+return <>...rest of the return </>
+
+- camelCase property naming conventions
+    
+```js
+<div tabIndex={1}>
+    <button onClick={myFunction}>Click ME </button>
+    <label htmlFor='name'>Name</label>
+    <input readOnly={true} id='name'/>
+</div>
+
+//in html
+<div tabIndex={1}>
+    <button onClick="myFunction()">Click ME </button>
+    <label for='name'>Name</label>
+    <input readOnly id='name'/>
+</div>
+```
+- className instead of class
+
+```js
+
+return <div className='someValue'> Hello </div>;
+
+```
+- close every element
+
+```js
+return <img />;
+or
+return <input />;
+```
+
+#### Nest Components
+```js
+function Greetings(){
+
+    return(
+        <div>
+            <Person/>
+            <Message/>
+        </div>
+    )
+}
+
+const Person = () => <h2> John Doe </h2>
+const Message = () => <p> This is my Message </p>
+
+#### React Developer Tools
+- top right corner
+- more tools/extensions
+- open chrome web store
