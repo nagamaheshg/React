@@ -1,0 +1,312 @@
+### setup
+
+- traditional Vite app
+    - removed boilerplate code
+    - provide some assets css, data
+        - Just so we can focus on important stuff
+        - remove <StrictMode>, so it's less logs
+
+### Advanced Topics
+
+- /tutorial directory
+- work in stater folder
+- complete code in the final folder
+- In order work on topic import component from 'starter'
+- In order to test final import component from 'final'
+- setup challenges
+- in the beginning example with numbers and buttons :):)
+
+```js 
+import Starter from './tutorial/01-useState/starter/01-error-example';
+
+function App() {
+	return (
+		<div className='container'>
+			<Starter />
+		</div>
+	);
+}
+
+export default App;
+```
+### The Need For State
+./tutorial/01-useState/starter/01-error-example.jsx
+
+- in App.jsx setup import and container div
+
+Setup challenge:
+
+- create Count Variable
+- display value in jsx
+- add button and increase the value
+- the reason for bug - we don't trigger re-render(reference next lecture)
+
+```js
+const ErrorExample = () => {
+	let count = 0;
+	const handleClick = () => {
+		count = count + 1;
+		console.log(count);
+        // preserve value between renders
+        // trigger re-render
+	};
+
+	return (
+		<div>
+			<h2>{count}</h2>
+			<button type='button' onClick={handleClick} className='btn'>
+				Increase
+			</button>
+		</div>
+	);
+};
+
+export default ErrorExample;
+```
+#### UseState Basics
+/tutorial/01-useState/stater/02-useState-basics.jsx
+
+- Destructure (Array)
+
+- useState hook
+- returns an array with two elements: the current state value, 
+  and a function that we can use to update state.
+- accept default value as an argument
+- state update triggers re-render
+
+```js
+
+import React, { useState } from 'react';
+
+const UseStateBasics = () => {
+	//console.log(useState(1));
+    // const value = useState('hello')[0];
+    // const func = useState('hello')[1];
+
+    // console.log(value)
+    // console.log(func)
+
+    const [count, setCount] = useState(0)
+
+    const handleClick = () => {
+        setCount(count+1);
+    }
+	return (
+		<div>
+			<h4>You Clicked {count} Times</h4>
+			<button type='button' onClick={handleClick} className='btn'>
+				Increase
+			</button>
+		</div>
+	);
+};
+export default UseStateBasics;
+```
+#### Initial Render and Re-renders
+In a React application, the initial render is the first time that the component tree is rendered to the DOM. It happens when the application first loads, or when the root component is first rendered. This is also known as "mounting" the components.
+
+Re-renders, on the other hand, happen when the component's state or props change, and the component needs to be updated in the DOM to reflect these changes. React uses a virtual DOM to optimize the process of updating the actual DOM, so that only the necessary changes are made.
+
+There are a few ways that you can trigger a re-render in a React component:
+
+By changing the component's state or props. When the component's state or props change, React will re-render the component to reflect these changes.
+
+When the parent element re-renders, even if the component's state or props have not changed.
+
+General Rules of Hooks
+starts with "use" (both -react and custom hooks)
+component must be uppercase
+invoke inside function/component body
+don't call hooks conditionally (cover later)
+set functions don't update state immediately (cover later)
+
+#### useState with Array
+import Starter from './tutorial/01-useState/starter/03-useState-array.jsx';
+
+Setup Challenge :
+
+import data
+
+setup a state value
+
+people - default value equal to data
+display list(people) in the browser
+
+create two functions
+
+one that removes single item from the list
+one that clears entire list
+
+```js
+import React, { useState } from 'react';
+import { data } from '../../../data';
+
+const useStateExample = () => {
+	const [persons, setPerson] = useState(data);
+
+	const clearAll = () => {
+		setPerson([]);
+	};
+	const removePerson = (id) => {
+		const personsList = persons.filter((person) => person.id !== id);
+		setPerson(personsList);
+	};
+	return (
+		<>
+			<ul>
+				{persons.map((person) => {
+					return (
+						<div key={person.id}>
+							<li key={person.id}>{person.name}</li>
+							<button type='button' className='btn' onClick={() => removePerson(person.id)}>
+								Remove
+							</button>
+						</div>
+					);
+				})}
+			</ul>
+			<button type='button' className='btn' onClick={clearAll} style={{ margin: '2rem 0', padding: '12px' }}>
+				Clear All
+			</button>
+		</>
+	);
+};
+export default useStateExample;
+```
+import Starter from './tutorial/01-useState/starter/04-useState-object.jsx';
+
+#### useState with Object
+
+Setup Challenge :
+
+setup three state values
+name(string)
+age(number)
+hobby(string)
+render in the browser
+create a button
+setup a function
+update all three state values
+as a result once the user clicks the button, new person is displayed in the browser
+
+#### Automatic Batching
+In React, "batching" refers to the process of grouping multiple state updates into a single update. This can be useful in certain cases because it allows React to optimize the rendering of your components by minimizing the number of DOM updates that it has to perform.
+
+By default, React uses a technique called "auto-batching" to group state updates that occur within the same event loop into a single update. This means that if you call the state update function multiple times in a short period of time, React will only perform a single re-render for all of the updates.
+
+React 18 ensures that state updates invoked from any location will be batched by default. This will batch state updates, including native event handlers, asynchronous operations, timeouts, and intervals.
+
+```js
+import React, { useState } from 'react';
+import { data } from '../../../data';
+
+const useStateObjectExample = () => {
+	
+    const [person, setPerson] = useState({
+        name: 'Mahesh',
+        age: 24,
+        hobby: 'read books'
+    })
+
+	const updatePersonDetails = () => {
+		//setPerson({name: 'john', age: 28, hobby: 'Scream at the computer'});
+        //setPerson('shakeAndBake'); app will not break because it not an object
+        //setPerson({name: 'Naga Mahesh Gatta'});
+        setPerson({...person, name: 'Naga Mahesh Gatta'})
+
+	};
+
+	return (
+		<>
+			<h2>{person.name}</h2>
+			<h3>{person.age}</h3>
+			<h4>{person.hobby}</h4>
+			<button type='button' onClick={updatePersonDetails} className='btn'>
+				Update Person
+			</button>
+		</>
+	);
+};
+
+export default useStateObjectExample;
+```
+#### Set Function "Gotcha"
+
+import Starter from './tutorial/01-useState/starter/05-useState-gotcha.jsx';
+
+Setup Challenge :
+
+- setup a state value and the button
+- add functionality to increase value by 1
+- log a state value, right after setFunction
+- Keep in mind that the state update function setState does not immediately mutate the state. Instead, it  schedules an update to the state and tells React that it needs to re-render the component. The actual state update will be performed as part of the next rendering cycle. Be mindful when you need to set state value based on a different state value.
+
+If you want to update the state immediately and synchronously, you can pass a function to setState that receives the previous state as an argument and returns the new state. For example:
+
+This can be useful if you need to update the state based on the previous state, or if you need to update the state synchronously.
+
+```js
+import React, { useState } from 'react';
+
+const useStateGotcha = () => {
+	const [count, setCount] = useState(0);
+
+	const increaseCount = () => {
+		setCount((currentState) => {
+            const newState = currentState + 1;
+            return newState
+        });
+		console.log(count);
+	};
+
+	return (
+		<>
+			<h2>{count}</h2>
+			<button type='button' className='btn' onClick={increaseCount}>
+				Increase
+			</button>
+		</>
+	);
+};
+
+export default useStateGotcha;
+```
+- setTimeout Example
+
+const handleClick = () => {
+  // setTimeout(() => {
+  // console.log('clicked the button');
+  //   setValue(value + 1);
+  // }, 3000);
+  setTimeout(() => {
+    console.log('clicked the button');
+    setValue((currentState) => {
+      return currentState + 1;
+    });
+  }, 3000);
+};
+
+- as an example refactor code in /tutorial/01-useState/03-useState-array
+- should we use functional update approach for everything?
+```
+import React, { useState } from 'react';
+
+const UseStateGotchaUseCase = () => {
+	const [count, setCount] = useState(0);
+
+	const handleClick = () => {
+		setTimeout(() => {
+			setCount((currentState)=>currentState+1);
+		}, 3000);
+	};
+	return (
+		<>
+			<h1>{count}</h1>
+			<button type='button' className='btn' onClick={handleClick}>
+				Increase
+			</button>
+		</>
+	);
+};
+export default UseStateGotchaUseCase;
+```
