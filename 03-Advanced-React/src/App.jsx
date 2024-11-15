@@ -1,4 +1,4 @@
-import Starter from './tutorial/01-useState/starter/06-useState-gotcha-useCase';
+import Starter from './tutorial/02-useEffect/starter/05-cleanup-function';
 
 function App() {
 	return (
